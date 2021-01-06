@@ -1,0 +1,20 @@
+.checkmark {
+    position: absolu inear-gradient(145deg, #ccd5de, #f3feff); 
+    color : red;
+    box-shadow:  2px 2px 4px #c1c9d2, 
+             -2px -2px 4px #ffffff;
+    border-radius: 50%;
+  }
+
+  .MuiCheckbox-colorPrimary.Mui-checked	{
+    /* color : linear-gradient(#50caff, #0478ff) !important; */
+    color : #0478ff  !important;
+  }
+
+
+
+
+/* border-radius: 50px;
+background: linear-gradient(145deg, #ccd5de, #f3feff);
+box-shadow:  2px 2px 4px #c1c9d2, 
+             -2px -2px 4px #ffffff; */

@@ -1,0 +1,41 @@
+.MuiAppBar-colorPrimary{
+    color : var(--color-solid) !important;
+    background-color: var(--color-surface) !important ;
+    border-radius: 40px 40px 0px 0px;
+}
+
+.MuiPaper-elevation4{
+    box-shadow:6px 6px 12px #b8b9be,-6px -6px 12px #fff!important;
+    /* box-shadow: 3px 3px 6px #b8b9be, -3px -3px 6px #fff; */
+}
+
+.header__logo{
+    width: 40px;
+    height : 40px;
+}
+
+.header__profile{
+padding :0px !important;
+box-shadow: 3px 3px 6px #b8b9be, -3px -3px 6px #fff !important;
+border-radius: 20px !important;
+margin-right : 16px !important;
+}
+
+.header__profile:hover
+{
+  box-shadow: 
+    inset 1rem 1rem 2rem rgba(0,0,0,.1),
+    inset -1rem -1rem 2rem rgba(255,255,255,.5) !important;
+}
+
+.header__title {
+    font-size: 72px;
+    
+     background: -webkit-linear-gradient(#50CAFF, #0478FF);
+     /* background: -webkit-linear-gradient(#EC5066, #374488);  */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    flex-grow: 1;
+    margin-left: 16px !important;
+  }
+

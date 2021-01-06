@@ -1,0 +1,21 @@
+.body__sidebar{
+    width : 200px;
+    align-items: center;
+    height : 100%;
+    background : var(--color-surface);
+    display : flex;
+    flex-direction: column;
+    border-radius : 0px 0px 40px 40px;
+    box-shadow:6px 6px 12px #b8b9be,-6px -6px 12px #fff!important;
+    padding-top: 16px;
+}
+
+#dimensions__drop{
+    width : 186px;
+}
+
+.sidebar__title{
+    text-align: center !important;
+    box-shadow:6px 6px 12px #b8b9be,-6px -6px 12px #fff!important;
+    
+}

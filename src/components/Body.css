@@ -1,0 +1,5 @@
+.body__container{
+    background : var(--color-surface);
+    height : 86vh ;
+    padding-bottom: 16px;
+}

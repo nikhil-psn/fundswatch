@@ -1,0 +1,28 @@
+.body__output {
+  display: flex;
+  justify-content: space-between;
+  margin: 0px 56px 0px 56px;
+  align-items: center;
+}
+
+.view__button {
+  width: 250px !important;
+  height: 38px !important;
+  background: linear-gradient(90deg, #50caff, #0478ff) !important;
+}
+
+.MuiCheckbox-colorSecondary.Mui-checked {
+  /* color : linear-gradient(#50caff, #0478ff) !important; */
+  color: #0478ff !important;
+}
+
+.select__div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.sort__by {
+  min-width: 30%;
+  /* min-width: 150px !important; */
+}

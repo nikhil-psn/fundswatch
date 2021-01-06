@@ -1,0 +1,13 @@
+.body__horizontalbar{
+    
+}
+
+#reportvalues__drop{
+    display : flex;
+}
+
+.horizontal__title{
+    text-align: center !important;
+    box-shadow:6px 6px 12px #b8b9be,-6px -6px 12px #fff!important;
+    
+}
