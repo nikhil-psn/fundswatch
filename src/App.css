@@ -1,5 +1,5 @@
-*{
-  margin:0px;
+* {
+  margin: 0px;
   /* background-color: var(--color-surface) ; */
 }
 
@@ -10,10 +10,10 @@
   --color-primary: teal;
 }
 
-.App{
-  padding : 15px ;
+.App {
+  padding: 15px;
   background-color: var(--color-surface);
-  height : 100vh;
+  height: 100vh;
 }
 
 /* .App {

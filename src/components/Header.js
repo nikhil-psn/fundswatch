@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import "./Header.css";
 import Axislogo from "../icons/AxisLogo.png";
+import { Link } from "react-router-dom";
 
 
 
@@ -49,10 +50,14 @@ const Header = () => {
       
       <AppBar position="static">
         <Toolbar>
-         
-          <Typography variant="h4" className="header__title">
-            Funds Watch
-          </Typography>
+          <div>
+            
+          </div>
+         <Link to="/">
+            <Typography variant="h4" className="header__title">
+              Funds Watch
+            </Typography>
+          </Link>
         
             <div>
               <IconButton

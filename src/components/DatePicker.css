@@ -46,5 +46,25 @@
 .period {
   margin-top: 32px;
   margin-bottom: 8px;
-  min-width: 150px;
+  min-width: 175px;
+  min-height: 44px !important;
+  background: var(--color-surface) !important;
+  /* background : red !important; */
+  /* padding : 6px ; */
+}
+
+.period > div:first-child {
+  height: 44px !important ;
+  box-shadow: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #fff !important ;
+  background: var(--color-surface) !important;
+  border: 0.0625rem solid white;
+  border-radius: 4px 4px 0px 0px;
+}
+
+.period > div:first-child::after {
+  height: 44px !important ;
+  box-shadow: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #fff !important ;
+  background: var(--color-surface) !important;
+  border: 0.0625rem solid white;
+  border-radius: 4px 4px 0px 0px;
 }

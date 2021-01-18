@@ -11,23 +11,30 @@ import OpenWithIcon from '@material-ui/icons/OpenWith';
 import ZoomOutMapIcon from '@material-ui/icons/ZoomOutMap';
 import DimensionDragable from "./DnD/Dimensions/DimensionDragable"
 import data from "../Dataa/index";
-import { withWidth } from '@material-ui/core';
+import { IconButton, withWidth } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
  function Sidebar() {
 
+
+  const deleteItem = (x) =>{
+    console.log(x)
+    // data.filter(d => {return (d.id!=x.id)} )
+    // data = [...data,x]
+  }
+
     const temp = data.map((x) => {
         return (
           <div>
             <DimensionDragable id={x.id} style={{ margin: "8px" }} >
-            
               <Item>
               <DragIndicatorIcon/>
                 {x.title}
+                <IconButton style={{zIndex:"10"}} onClick ={deleteItem(x)}>
                 <OpenWithIcon/>
+                </IconButton>
                 </Item>
-           
             </DimensionDragable>
           </div>
         );
@@ -35,7 +42,13 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
     
     return (
         <div className="body__sidebar">
-          <Item className="sidebar__title"style={{width:"154px", color: "#0776c5"}}><DragIndicatorIcon style={{color: "white", marginTop:"-5px"}}/><h4>Dimensions</h4> <ExpandMoreIcon/></Item>
+          <Item onDoubleClick={console.log("Dimensions item arrow is clicked!")} className="sidebar__title"style={{width:"154px", color: "#0776c5"}}>
+            <DragIndicatorIcon style={{color: "white", marginTop:"-5px"}}/>
+            <h4>Dimensions</h4>
+            <IconButton onDoubleClick={console.log("Dimensions arrow is clicked!")}>
+            <ExpandMoreIcon/>
+            </IconButton>
+          </Item>
         <DimensionDroppable id="dimensions__drop">
         
         {temp}

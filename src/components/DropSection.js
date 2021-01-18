@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import "./DropSection.css";
 import Checkbox from '@material-ui/core/Checkbox';
 import DatePicker  from './DatePicker';
-import { dTo, dFrom} from './DatePicker';
+import { dTo, dFrom , frequency} from './DatePicker';
 // import CheckBox from './CheckBox';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -21,7 +21,17 @@ import {trace_report} from "./DnD/ReportValues/ReportDroppable";
 import makeAnimated from "react-select/animated";
 import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
 import CsvDownload from 'react-json-to-csv'
+// import { useJsonToCsv } from 'react-json-csv';
 import { InputBase, TextField } from "@material-ui/core";
+import { useStateValue } from '../StateProvider';
+import axios from "axios";
+import schedule from 'node-schedule';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DateTimePicker from 'react-datetime-picker';
 const animatedComponents = makeAnimated();
 
 const mockData = [{"ID":1,"First Name":"Sarajane","Last Name":"Wheatman","Email":"swheatman0@google.nl","Language":"Zulu","IP Address":"40.98.252.240"},
@@ -38,6 +48,14 @@ const v ={
   arrayOne:[],
   arrayTwo:[],
   fromToDate:[],
+ 
+};
+const items ={
+  arrayOne:null,
+  arrayTwo:null,
+  fromDate:null,
+  toDate:null,
+  frequency:null,
  
 };
 const optionsCloumns = [
@@ -64,6 +82,7 @@ const optionsCloumns = [
   { value: "SWP Amount", label: "SWP Amount" },
 ];
 const stringColumns = ["Investor" ,"Investor Type" ,"Distributor" ,"Distb. Type" ,"City" ,"State" ,"City Category" ,"Plan Type" ,"Asset Class" ];
+
 const optionsSubject = [
   { value: "0", label: "Less Than" },
   { value: "1", label: "Greater Than" },
@@ -75,6 +94,7 @@ const optionsSubject = [
   { value: "8", label: "Sum Greater Than" },
   { value: "9", label: "Sum =" },
 ];
+
 const optionsFilters = [
   { value: "A", label: "A" },
   { value: "B", label: "B" },
@@ -116,15 +136,46 @@ const useStyles = makeStyles((theme) => ({
   };
 
 export default function DropSection() {
+    // const { saveAsCsv } = useJsonToCsv();
     const classes = useStyles();
+    const [{basket, report}, dispatch] = useStateValue();
     const [column, setColumn] = useState("time -1");
     const [subject, setSubject] = useState("");
     const [value, setValue] = useState("");
+    // const [time,setTime] = useState(null);
     const selectInputRefA = useRef();
     const selectInputRefB = useRef();
     const selectInputRefC = useRef();
+    const [selectedDate, setSelectedDate] = React.useState(new Date());
+    const [openP, setOpenP] = React.useState(false);
+    const [optionsFilters,setOptionsFilters]=useState([]);
+
+    const handleClickOpen = () => {
+      setOpenP(true);
+    };
+  
+    const handleClose1 = () => {
+      setOpenP(false);
+      setSelectedDate(null);
+    };
+    
+    const handleCancel1 = () => {
+      setOpenP(false);
+      setSelectedDate(null);
+    };
+
+    const handleSubmit1 = (e) => {
+      e.preventDefault();
+      setOpenP(false);
+      var date = new Date(2021, 0, 10, 18, 35, 0);
+      console.log('The functioned is scheduled for ::',selectedDate);
+      // var j = schedule.scheduleJob(selectedDate, function(){
+      //   console.log('The functioned got executed now.');
+      // });
+    };
     // const [x,setX] = useState([1,2,3]);
-    const [filtersList,setFiltersList] = useState([{a:"Col1",b:[1,2,3],c:1},{a:"Col 2",b:22,c:2},{a:"Col 3",b:222,c:3}]);
+    const [filtersList,setFiltersList] = useState([]);
+    // const [filtersList,setFiltersList] = useState([{a:"Col1",b:[1,2,3],c:1},{a:"Col 2",b:22,c:2},{a:"Col 3",b:222,c:3}]);
     const [state, setState] = React.useState({
         checkedA: true,
         checkedB: true,
@@ -138,6 +189,19 @@ export default function DropSection() {
         } else {
         console.log("column changed to ", value.value)
         setColumn(value.value);
+        setOptionsFilters([]);
+        axios.post("http://localhost:5000/api/reports/getvalues", {column:value.label}).then((response) => {
+          if (response.data.success) {
+            console.log(response.data.values)
+            setOptionsFilters(response.data.values.map(e=>{
+              return {value:e[value.label],label:e[value.label]}
+            }))
+          }
+          else {
+            alert("Couldnt fetch the results");
+          }
+        });
+
         }
       };
       const SubjectChanged = (value) => {
@@ -160,22 +224,68 @@ export default function DropSection() {
         setState({ ...state, [event.target.name]: event.target.checked });
       };
 
-      // const clearSelects = () => {
-      //   selectInputRefA.current.select.clearValue();
-      //   selectInputRefB.current.select.clearValue();
-      //   selectInputRefC.current.select.clearValue();
-      // };
+      const onDateChange = (date) => {
+        setSelectedDate(date);
+        console.log(date)
+      };
+
+    const schedule = () =>{
+      setOpenP(true);
+      // var date = new Date(2021, 0, 13, 8, 6, 0);
+      // var j = schedule.scheduleJob(date, function(){
+      //   console.log('The world is going to end today.');
+      // });
+      // var date = new Date(2021, 0, 10, 18, 35, 0);
+      // console.log('The functioned is scheduled for ::',selectedDate);
+      // var j = schedule.scheduleJob(selectedDate, function(){
+      //   console.log('The functioned got executed now.');
+      // });
+    }
+
+    const save = () =>{
+      items.arrayOne= trace.filter(t=>{
+        return !isNaN(t)
+      });
+      items.arrayTwo = trace_report.filter(t=>{
+        return !isNaN(t)
+      });
+      var F= new Date(dFrom);
+      var T= new Date(dTo);
+      F=F.getDate() + '-' +  (F.getMonth() + 1)  + '-' +  F.getFullYear();
+      T=T.getDate() + '-' +  (T.getMonth() + 1)  + '-' +  T.getFullYear()
+      items.fromDate = F;
+      items.toDate = T;
+      items.frequency = frequency
+      console.log("items are ",items)
+      axios.post("http://localhost:5000/api/reports/getreport1", items).then((response) => {
+        if (response.data.success) {
+          console.log(response.data.results)
+          console.log(response.data.results.Items)
+          dispatch({
+            type:"SET_REPORT",
+            report:response.data.results.Items
+          });
+        }
+        else {
+          alert("Couldnt fetch the results");
+        }
+      });
+    }
 
     function pop() {
       v.arrayOne.push(trace);
       v.arrayTwo.push(trace_report);
-      var F= new Date(dFrom[dFrom.length-1]);
-      var T= new Date(dTo[dTo.length-1]);
+      var F= new Date(dFrom);
+      var T= new Date(dTo);
       F=F.getDate() + '-' +  (F.getMonth() + 1)  + '-' +  F.getFullYear();
       T=T.getDate() + '-' +  (T.getMonth() + 1)  + '-' +  T.getFullYear()
       v.fromToDate.push(F,T);
       console.log(v);
     }
+
+    useEffect(()=>{
+      console.log("The basket is >>", basket)
+    })
 
     const addFilter = () => {
       var v = filtersList;
@@ -185,6 +295,7 @@ export default function DropSection() {
       v = [...v,val]
       console.log(v);;
       setFiltersList(v);
+      setOptionsFilters([]);
       if(selectInputRefA.current && selectInputRefA.current.select){
         selectInputRefA.current.select.clearValue();
       }
@@ -345,16 +456,59 @@ export default function DropSection() {
                   label="Graphical"
                 />
                 </FormGroup>
-                <Link to ="/excel">
-                  <Button variant="contained" color="secondary" className="view__button" onClick={pop}  >
+                <Button variant="contained" color="secondary" className="view__button" onClick={save}>
+                  Save
+                </Button>
+                <Button variant="contained" color="secondary" className="view__button" onClick={schedule}>
+                  Schedule
+                </Button>
+                <Dialog
+                  open={openP}
+                  onClose={handleClose1}
+                  className="schedule__dialog"
+                  // PaperComponent={PaperComponent}
+                  style={{ height:"400px"}}
+                  aria-labelledby="draggable-dialog-title"
+                >
+                  <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
+                    Select a time to schedule the report
+                  </DialogTitle>
+                  <DialogContent>
+                  <div className={classes.root}>
+                  <DateTimePicker
+                    onChange={onDateChange}
+                    value={selectedDate}
+                  />
+                  </div>
+                  </DialogContent>
+                  <DialogActions>
+                    <Button autoFocus onClick={handleCancel1} color="primary">
+                      Cancel
+                    </Button>
+                    <Button onClick={handleSubmit1} color="primary">
+                    Schedule
+                    </Button>
+                  </DialogActions>
+                </Dialog>
+                
+                {
+                report &&
+                (<Link to ="/excel">
+                  <Button variant="contained" color="secondary" className="view__button" onClick={pop}>
                   View
                   {/* <GraphRendering/> */}
                 </Button>
                 </Link>
-                <CsvDownload 
-                  data={mockData}
-                  filename="test_data.csv"
-                  style={{ //pass other props, like styles
+                )}
+                {/* <button onClick={saveAsCsv({ data, fields, filename })}>
+                  useJsonToCsv
+                </button> */}
+{
+                report &&
+                (<CsvDownload
+                    data={report}
+                    filename="report_data.csv"
+                    style={{ //pass other props, like styles
                     boxShadow:"inset 0px 1px 0px 0px #e184f3",
                     background:"linear-gradient(to bottom, #c123de 5%, #a20dbd 100%)",
                     backgroundColor:"#c123de",
@@ -370,11 +524,11 @@ export default function DropSection() {
                     }}
                 >
                   Download Test Data ✨
-                </CsvDownload> 
+                </CsvDownload>)
+                }
               </div>
             </Grid>
-          </Grid>
-        
+          </Grid>   
     )
 }
 export {v};

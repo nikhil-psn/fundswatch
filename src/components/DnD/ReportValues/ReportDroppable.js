@@ -34,6 +34,6 @@ export default class ReportDroppable extends React.Component{
 ReportDroppable.propTypes={
     id:PropTypes.string,
     style:PropTypes.object,
-    children:PropTypes.node,
+    children:trace_report,
 };
-export {trace_report} ; 
+export {trace_report};
