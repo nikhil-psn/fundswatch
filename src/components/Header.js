@@ -11,6 +11,8 @@ import Menu from '@material-ui/core/Menu';
 import "./Header.css";
 import Axislogo from "../icons/AxisLogo.png";
 import { Link } from "react-router-dom";
+import { useHistory } from 'react-router-dom';
+import { useStateValue } from '../StateProvider';
 
 
 
@@ -31,7 +33,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = () => {
   const classes = useStyles();
-
+  const history = useHistory();
+  const [{user, basket, report}, dispatch] = useStateValue();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
@@ -40,6 +43,15 @@ const Header = () => {
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+
+  const handleLogout = () =>{
+    dispatch({
+      type:"SET_USER",
+      user:null
+    });
+    history.push("/");
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -88,6 +100,7 @@ const Header = () => {
               >
                 <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
+                <MenuItem onClick={handleLogout}>Logout</MenuItem>
               </Menu>
             </div>
          

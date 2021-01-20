@@ -17,11 +17,18 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 
  function Sidebar() {
 
+  const addItem = (x) =>{
+    console.log("adding the item:",x)
+    document.getElementById("dimensions__drop__selected").appendChild(document.getElementById(x.id));
+  }
 
   const deleteItem = (x) =>{
-    console.log(x)
-    // data.filter(d => {return (d.id!=x.id)} )
-    // data = [...data,x]
+    console.log("Deleting the item:",x)
+    document.getElementById("dimensions__drop").appendChild(document.getElementById(x.id));
+  }
+
+  const clickedFunc = () =>{
+    console.log("Dimensions arrow is clicked!")
   }
 
     const temp = data.map((x) => {
@@ -29,9 +36,11 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
           <div>
             <DimensionDragable id={x.id} style={{ margin: "8px" }} >
               <Item>
-              <DragIndicatorIcon/>
+              <IconButton onClick ={()=>{addItem(x)}}>
+                <DragIndicatorIcon/>
+              </IconButton>
                 {x.title}
-                <IconButton style={{zIndex:"10"}} onClick ={deleteItem(x)}>
+                <IconButton onClick ={()=>{deleteItem(x)}}>
                 <OpenWithIcon/>
                 </IconButton>
                 </Item>
@@ -45,8 +54,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
           <Item onDoubleClick={console.log("Dimensions item arrow is clicked!")} className="sidebar__title"style={{width:"154px", color: "#0776c5"}}>
             <DragIndicatorIcon style={{color: "white", marginTop:"-5px"}}/>
             <h4>Dimensions</h4>
-            <IconButton onDoubleClick={console.log("Dimensions arrow is clicked!")}>
-            <ExpandMoreIcon/>
+            <IconButton onClick={clickedFunc}>
+            <ExpandMoreIcon />
             </IconButton>
           </Item>
         <DimensionDroppable id="dimensions__drop">

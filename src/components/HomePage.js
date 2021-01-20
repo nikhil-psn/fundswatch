@@ -36,8 +36,8 @@ const useStyles = makeStyles((theme) => ({
     const password = document.getElementsByClassName("pass-input")[0].value
     console.log(userName);
     console.log(password);
-    axios.post("http://localhost:5000/api/users/login", {username:userName,password:password}).then((response) => {
-      if (response.data.success && response.data.user) {
+    axios.post("http://localhost:5000/api/users/login", {name:userName,password:password}).then((response) => {
+      if (response.data.loginSuccess && response.data.user) {
         console.log("The user is ")
         console.log(response.data.user)
         // console.log(response.data.results.Items)

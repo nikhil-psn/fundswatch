@@ -3,7 +3,8 @@ export const initialState = {
     reportValues : [10,20,30],
     dimensions:[1,2,3],
     user: null,
-    report:null
+    report:null,
+    preset:null
   };
   
   // Selector
@@ -113,6 +114,12 @@ const reducer = (state, action) => {
                     basket: newBasket
                 }
         
+        case "SET_PRESET":
+        return {
+            ...state,
+            preset: action.preset
+        }
+
         case "SET_USER":
         return {
             ...state,

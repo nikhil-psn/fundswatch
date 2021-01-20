@@ -32,6 +32,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DateTimePicker from 'react-datetime-picker';
+// import TextField from '@material-ui/core/TextField';
 const animatedComponents = makeAnimated();
 
 const mockData = [{"ID":1,"First Name":"Sarajane","Last Name":"Wheatman","Email":"swheatman0@google.nl","Language":"Zulu","IP Address":"40.98.252.240"},
@@ -56,6 +57,7 @@ const items ={
   fromDate:null,
   toDate:null,
   frequency:null,
+  filtersList:null
  
 };
 const optionsCloumns = [
@@ -106,6 +108,15 @@ const optionsFilters = [
 ];
 
 const useStyles = makeStyles((theme) => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
+  },
     root: {
       flexGrow: 1,
     },
@@ -138,7 +149,7 @@ const useStyles = makeStyles((theme) => ({
 export default function DropSection() {
     // const { saveAsCsv } = useJsonToCsv();
     const classes = useStyles();
-    const [{basket, report}, dispatch] = useStateValue();
+    const [{user, basket, report}, dispatch] = useStateValue();
     const [column, setColumn] = useState("time -1");
     const [subject, setSubject] = useState("");
     const [value, setValue] = useState("");
@@ -167,11 +178,10 @@ export default function DropSection() {
     const handleSubmit1 = (e) => {
       e.preventDefault();
       setOpenP(false);
-      var date = new Date(2021, 0, 10, 18, 35, 0);
       console.log('The functioned is scheduled for ::',selectedDate);
-      // var j = schedule.scheduleJob(selectedDate, function(){
-      //   console.log('The functioned got executed now.');
-      // });
+      schedule.scheduleJob(selectedDate, function(){
+        console.log('The function got executed now.');
+      });
     };
     // const [x,setX] = useState([1,2,3]);
     const [filtersList,setFiltersList] = useState([]);
@@ -229,20 +239,17 @@ export default function DropSection() {
         console.log(date)
       };
 
-    const schedule = () =>{
+    const scheduleFunc = () =>{
       setOpenP(true);
-      // var date = new Date(2021, 0, 13, 8, 6, 0);
-      // var j = schedule.scheduleJob(date, function(){
-      //   console.log('The world is going to end today.');
-      // });
-      // var date = new Date(2021, 0, 10, 18, 35, 0);
-      // console.log('The functioned is scheduled for ::',selectedDate);
-      // var j = schedule.scheduleJob(selectedDate, function(){
-      //   console.log('The functioned got executed now.');
+      
+      // var date = new Date(2021, 0, 18, 13, 45,0);
+      // console.log('The function is scheduled for ::',date);
+      // schedule.scheduleJob(date, function(){
+      //   console.log('The function got executed now.');
       // });
     }
 
-    const save = () =>{
+    const generate = () =>{
       items.arrayOne= trace.filter(t=>{
         return !isNaN(t)
       });
@@ -256,7 +263,9 @@ export default function DropSection() {
       items.fromDate = F;
       items.toDate = T;
       items.frequency = frequency
+      items.filtersList = filtersList
       console.log("items are ",items)
+
       axios.post("http://localhost:5000/api/reports/getreport1", items).then((response) => {
         if (response.data.success) {
           console.log(response.data.results)
@@ -270,6 +279,21 @@ export default function DropSection() {
           alert("Couldnt fetch the results");
         }
       });
+    }
+
+
+    const save = () =>{
+      console.log("Editing the  user is :", user)
+      axios.post("http://localhost:5000/api/users/addPreset", {userId:user._id,preset:filtersList}).then((response) => {
+      if (response.data.success) {
+        console.log("The user with modified presets is ::")
+        console.log(response.data.user)
+      }
+      else {
+        alert("Couldnt fetch the results");
+      }
+    });
+    
     }
 
     function pop() {
@@ -372,14 +396,14 @@ export default function DropSection() {
               <Grid item xs={3} > 
                 <div  className={classes.drop} >
                   <h3 style={{alignItems : "center"}}>Dimensions</h3>
-                  <DimensionDroppable id="dimensions__drop"  style={droppableStyle} >
+                  <DimensionDroppable id="dimensions__drop__selected"  style={droppableStyle} >
                   </DimensionDroppable>
                 </div>
               </Grid>
               <Grid item xs={3}>
                 <div  className={classes.drop} style={{paddingRight: "18px"}} >
                   <h3 style={{alignItems : "center"}}>Report Values</h3>
-                  <ReportDroppable id="dimensions__drop"  style={droppableStyle} >
+                  <ReportDroppable id="report__drop"  style={droppableStyle} >
                   </ReportDroppable>
                 </div>
               </Grid>
@@ -441,6 +465,7 @@ export default function DropSection() {
                     }
                 </div>
               <AddCircleOutlineIcon onClick={addFilter}/>
+
               </div>
             </Grid>
             <Grid item xs={12}>
@@ -459,7 +484,10 @@ export default function DropSection() {
                 <Button variant="contained" color="secondary" className="view__button" onClick={save}>
                   Save
                 </Button>
-                <Button variant="contained" color="secondary" className="view__button" onClick={schedule}>
+                <Button variant="contained" color="secondary" className="view__button" onClick={generate}>
+                  Generate Report
+                </Button>
+                <Button variant="contained" color="secondary" className="view__button" onClick={scheduleFunc}>
                   Schedule
                 </Button>
                 <Dialog
@@ -475,10 +503,20 @@ export default function DropSection() {
                   </DialogTitle>
                   <DialogContent>
                   <div className={classes.root}>
-                  <DateTimePicker
+                  <TextField
+                    id="datetime-local"
+                    label="Next appointment"
+                    type="datetime-local"
+                    defaultValue="2017-05-24T10:30"
+                    className={classes.textField}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                  />
+                  {/* <DateTimePicker
                     onChange={onDateChange}
                     value={selectedDate}
-                  />
+                  /> */}
                   </div>
                   </DialogContent>
                   <DialogActions>

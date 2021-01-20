@@ -11,11 +11,19 @@ export default class DimensionDroppable extends React.Component{
         
          e.preventDefault();
          try {
-            
             const data = e.dataTransfer.getData('dimension');
+            console.log("The data is :",data)
             const i = trace.indexOf(parseInt(data));
             trace.includes(parseInt(data)) ? trace.splice(i, 1)  : trace.push(parseInt(data));
-            e.target.appendChild(document.getElementById(data));
+            // document.getElementById('dimensions__drop').appendChild(document.getElementById(data));
+            document.getElementById('dimensions__drop__selected').appendChild(document.getElementById(data));
+            // document.getElementById('dimensions__drop__selected').appendChild(document.getElementById(2));
+            
+            // console.log("The first child",e.target.firstChild)
+            // console.log("The html element is :",e.target)
+            // console.log("The document element is :",document.getElementById('dimensions__drop__selected'))
+            // console.log("The first child in dimension drop",document.getElementById("dimensions__drop__selected").firstChild)
+            // e.target.removeChild(document.getElementById(1));
             console.log(trace);
            
             //  console.log(trace);
@@ -29,13 +37,14 @@ export default class DimensionDroppable extends React.Component{
          e.preventDefault();
      }
 
-     
      render(){
 
          return(
+             <div id="droppable__temp">
              <div id={this.props.id} onDrop={this.drop} onDragOver={this.allowDrop} style={this.props.style}>
                  {this.props.children}
                  
+             </div>
              </div>
          );
      }

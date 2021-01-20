@@ -12,7 +12,7 @@ function SocialMedia() {
       </li>
       
       <li class="icon-item">
-        <a href="" target="_blank" class="icon-link"><i class="fab fa-facebook-f"></i></a>
+        <a href="/excel" class="icon-link"><i class="fab fa-facebook-f"></i></a>
       </li>
       
      

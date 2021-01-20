@@ -28,6 +28,7 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
+import { useStateValue } from '../StateProvider';
 
 
 const preset = [{
@@ -81,6 +82,7 @@ const animatedComponents = makeAnimated();
 export default function DatePicker() {
 
   const [open, setOpen] = React.useState(false);
+  // const [{preset}, dispatch] = useStateValue();
 
   const handleClickOpen = () => {
     setOpen(true);

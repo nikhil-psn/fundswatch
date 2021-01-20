@@ -17,8 +17,12 @@ import { ImportContacts } from "@material-ui/icons";
 import HomePage from "./components/HomePage";
 import Chart from "./components/Chart";
 import DatePicker from "./components/DateTrial";
+import { useStateValue } from './StateProvider';
 
 function App() {
+
+  const [{user, basket, report}, dispatch] = useStateValue();
+  
   return (
     <Router>
       <div className="App">
@@ -34,9 +38,13 @@ function App() {
             <Header/>
             <GraphRendering/>
           </Route>
-          <Route path="/excel">
-            <Header/>
-            <TestComponent/>
+          <Route path="/excel"
+          // conmponent={()=>{
+          // <TestComponent/>
+          // }}
+          >
+            <Header/> 
+            {report ? <TestComponent/>:<div>No report to show</div>}
             {/* <Excel /> */}
           </Route>
           <Route path="/apichart">
